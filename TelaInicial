@@ -4,27 +4,54 @@
  */
 package com.mycompany.salgas_museu.telas;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.sql.*;
+import com.mycompany.salgas_museu.dao.Conecty;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author Aluno
  */
-public class TelaInicial extends javax.swing.JFrame {
-    
-        private LoginVisitante BotaoVisitante;
-        private LoginVisitante LoginVisitante;
-    /**
-     * Creates new form TelaInicial
-     */
-    public TelaInicial() {
-        initComponents();
-        this.LoginVisitante = new LoginVisitante();
-        
-    }
+public class LoginVisitante extends javax.swing.JFrame {
 
+    Connection conexao = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
+    /**
+     * Creates new form LoginVisitante
+     */
+    public LoginVisitante() {
+        initComponents();
+        
+    conexao = Conecty.conector();
+    System.out.println("Hello Word");
+    
+    
+    }
+public void logar(){
+    
+    String sql = "*SELECT * FROM USUARIOS WHERE EMAIL =? AND SENHA =?";
+    try {
+        
+        ps = conexao.prepareStatement(sql);
+        ps.setString(1, txtUsuario.getText());
+        ps.setString(2, txtSenha.getText());
+        
+        rs = ps.executeQuery();
+        
+        if(rs.next()){
+            TelaInicial inicial = new TelaInicial();
+            inicial.setVisible(true);
+            this.dispose ();
+            conexao.close();
+        }else{
+            JOptionPane.showMessageDialog(null, "Usuario/Senha Invalidos");
+        }
+                
+                }catch (Exception e){
+            JOptionPane.showMessageDialog(null,"CONCLUIDO!!!");
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,157 +61,125 @@ public class TelaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
-        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        lblData = new javax.swing.JLabel();
-        Menu = new javax.swing.JMenuBar();
-        btnSair = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-
-        jDesktopPane1.setBackground(new java.awt.Color(232, 190, 149));
-
-        jLabel2.setForeground(new java.awt.Color(232, 190, 149));
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\mathe\\Pictures\\procabocov-removebg-preview.png")); // NOI18N
-        jLabel2.setText("jLabel2");
-
-        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addContainerGap())
-        );
+        jLabel2 = new javax.swing.JLabel();
+        btnOk = new javax.swing.JButton();
+        LoginColab = new javax.swing.JButton();
+        txtSenha = new javax.swing.JPasswordField();
+        txtUsuario = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(232, 190, 149));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
+
+        jPanel1.setBackground(new java.awt.Color(232, 190, 149));
+        jPanel1.setForeground(new java.awt.Color(232, 190, 149));
+
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Email");
+
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Senha");
+
+        btnOk.setBackground(new java.awt.Color(204, 204, 204));
+        btnOk.setForeground(new java.awt.Color(0, 0, 0));
+        btnOk.setText("OK");
+        btnOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOkActionPerformed(evt);
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(232, 190, 149));
-        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
+        LoginColab.setBackground(new java.awt.Color(204, 204, 204));
+        LoginColab.setForeground(new java.awt.Color(0, 0, 0));
+        LoginColab.setText("Você é um doador?");
+        LoginColab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginColabActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setForeground(new java.awt.Color(232, 190, 149));
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\mathe\\Pictures\\procabocov-removebg-preview.png")); // NOI18N
-        jLabel4.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        txtSenha.setBackground(new java.awt.Color(204, 204, 204));
+        txtSenha.setForeground(new java.awt.Color(0, 0, 0));
+        txtSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSenhaActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("DATA:");
-
-        lblData.setForeground(new java.awt.Color(0, 0, 0));
+        txtUsuario.setBackground(new java.awt.Color(204, 204, 204));
+        txtUsuario.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(47, 47, 47)
-                        .addComponent(lblData)
-                        .addGap(86, 86, 86))))
+                .addContainerGap(88, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(txtSenha)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnOk)
+                        .addGap(34, 34, 34)
+                        .addComponent(LoginColab))
+                    .addComponent(txtUsuario))
+                .addGap(83, 83, 83))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblData))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(46, 46, 46)
                 .addComponent(jLabel1)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOk)
+                    .addComponent(LoginColab))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
-
-        btnSair.setText("OPÇÕES");
-
-        jMenuItem1.setText("Sair");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        btnSair.add(jMenuItem1);
-
-        jMenuItem2.setText("LoginVIsitante");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        btnSair.add(jMenuItem2);
-
-        Menu.add(btnSair);
-
-        setJMenuBar(Menu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>                        
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {                                     
+    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {                                      
         // TODO add your handling code here:
-        Date data = new Date ();
-        DateFormat formatador = DateFormat.getDateInstance(DateFormat.SHORT);
-        lblData.setText(formatador.format(data));
-        
-    }                                    
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-        int sair = JOptionPane.showConfirmDialog(null,"Tem certeza que deseja sair?","Atenção",JOptionPane.YES_NO_OPTION);
-        if (sair == JOptionPane.YES_OPTION){
-            System.exit(0);
-            
-            
-        }
-    }                                          
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-        LoginVisitante l = new LoginVisitante();
+        //chamando metodo logar
+        logar();
+        TelaInicial l = new TelaInicial();
         this.dispose();
         l.setVisible(true);
+    }                                     
+
+    private void LoginColabActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        // TODO add your handling code here:
+        LoginColaborador l = new LoginColaborador();
+        this.dispose();
+        l.setVisible(true);
+        
     }                                          
- 
+
+    private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+    }                                        
+
     /**
      * @param args the command line arguments
      */
@@ -202,35 +197,31 @@ public class TelaInicial extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginVisitante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginVisitante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginVisitante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginVisitante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaInicial().setVisible(true);
+                new LoginVisitante().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JMenuBar Menu;
-    private javax.swing.JMenu btnSair;
-    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JButton LoginColab;
+    private javax.swing.JButton btnOk;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblData;
+    private javax.swing.JPasswordField txtSenha;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration                   
 }
